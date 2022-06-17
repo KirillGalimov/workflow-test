@@ -1,9 +1,9 @@
-import { getFalse, getTrue } from './utils';
+import { getNull, getTrue } from './utils';
 
 it('should return true', () => {
   expect(getTrue()).toBeTruthy();
 });
 
 it('should return false', () => {
-  expect(getFalse()).toBeFalsy();
+  expect(getNull()).toBeNull();
 });
