@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch Main branch
-        run: git fetch --no-tags --depth=1 origin main
+        run: git fetch --no-tags --depth=1 ${{ github.event.pull_request.base.ref }}
 
       - name: Install Node
         uses: actions/setup-node@v2
