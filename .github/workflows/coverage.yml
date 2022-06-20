@@ -1,13 +1,13 @@
 name: Coverage
 
-env:
-  base_branch: ${{ github.event.pull_request.base.ref }}
-
 on:
   pull_request:
     branches:
       - main
       - test
+
+env:
+  base_branch: ${{ github.event.pull_request.base.ref }}
 
 jobs:
   coverage:
