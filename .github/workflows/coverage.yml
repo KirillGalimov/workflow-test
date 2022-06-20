@@ -23,6 +23,6 @@ jobs:
           CI: true
 
       - name: Get Coverage
-        run: yarn test --changedSince=origin/master --coverage
+        run: yarn test --changedSince=origin/main --coverage
         env:
           CI: true
