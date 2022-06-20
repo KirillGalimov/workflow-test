@@ -30,6 +30,6 @@ jobs:
           CI: true
 
       - name: Get Coverage
-        run: jest --changedSince=main --coverage
+        run: yarn jest --changedSince=main --coverage
         env:
           CI: true
