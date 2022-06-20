@@ -8,15 +8,19 @@ on:
 
 jobs:
   coverage:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      #   with:
+      #     fetch-depth: 0
 
-      - name: Fetch Main branch
-        run: git fetch --no-tags --depth=1 origin main
+      # - name: Fetch Main branch
+      #   run: git fetch --no-tags --depth=1 origin main
 
       - name: Install Node
         uses: actions/setup-node@v2
@@ -25,10 +29,12 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
-        env:
-          CI: true
 
-      - name: Get Coverage
-        run: yarn test --changedSince=origin/main --coverage
-        env:
-          CI: true
+      # - name: Get Coverage
+      #   run: yarn test --changedSince=origin/main --coverage
+      #   env:
+      #     CI: true
+
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          skip-step: install
