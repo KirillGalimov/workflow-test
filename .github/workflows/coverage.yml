@@ -25,10 +25,6 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
-        env:
-          CI: true
 
       - name: Get Coverage
-        run: yarn test --changedSince=origin/main --coverage
-        env:
-          CI: true
+        run: yarn test --changedSince=origin/${{ github.event.pull_request.base.ref }} --coverage
