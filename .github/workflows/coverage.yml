@@ -15,7 +15,7 @@ jobs:
 
       - name: Fetch Main branch
         run: |
-          git fetch --no-tags --depth=1 origin main
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/* # fetches all branches
           git checkout main
           git checkout ${{ github.event.pull_request.head.sha }}
 
