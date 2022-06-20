@@ -10,10 +10,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Fetch Main branch
-        run: |
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/* # fetches all branches
-          git checkout main
-          git checkout ${{ github.event.pull_request.head.sha }}
+        run: git fetch --no-tags --depth=1 origin main
 
       - name: Install Node
         uses: actions/setup-node@v2
@@ -26,6 +23,6 @@ jobs:
           CI: true
 
       - name: Get Coverage
-        run: yarn jest --changedSince=main --coverage
+        run: yarn test --changedSince=origin/master --coverage
         env:
           CI: true
