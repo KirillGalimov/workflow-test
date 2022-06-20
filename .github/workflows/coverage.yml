@@ -8,9 +8,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Fetch Main branch
-        run: git fetch --no-tags --depth=1 origin main
+        with:
+          fetch-depth: 0
+      - run: git fetch --no-tags --depth=1 origin main
 
       - name: Install Node
         uses: actions/setup-node@v2
