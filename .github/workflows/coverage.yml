@@ -25,6 +25,6 @@ jobs:
           CI: true
 
       - name: Get Coverage
-        run: yarn jest --changedSince=origin/main --coverage
+        run: yarn test --changedSince=origin/main --coverage
         env:
           CI: true
