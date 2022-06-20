@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
 
       - name: Fetch Main branch
-        run: git fetch --no-tags --depth=1000 origin main
+        run: git fetch --no-tags --depth=1 origin main
 
       - name: Install Node
         uses: actions/setup-node@v2
