@@ -1,5 +1,8 @@
 name: Coverage
 
+env:
+  base_branch: ${{ github.event.pull_request.base.ref }}
+
 on:
   pull_request:
     branches:
@@ -16,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch Main branch
-        run: git fetch --no-tags --depth=1 origin ${{ github.event.pull_request.base.ref }}
+        run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
 
       - name: Install Node
         uses: actions/setup-node@v2
@@ -27,4 +30,4 @@ jobs:
         run: yarn install
 
       - name: Get Coverage
-        run: yarn test --changedSince=origin/${{ github.event.pull_request.base.ref }} --coverage
+        run: yarn test --changedSince=origin/${{ env.base_branch }} --coverage
