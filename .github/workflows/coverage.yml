@@ -38,5 +38,4 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           skip-step: install
-          package-manager: yarn
           test-script: yarn test
