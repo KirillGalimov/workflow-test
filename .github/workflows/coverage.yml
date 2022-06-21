@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      #   with:
-      #     fetch-depth: 0
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      # - name: Fetch Main branch
-      #   run: git fetch --no-tags --depth=1 origin main
+      - name: Fetch Main branch
+        run: git fetch --no-tags --depth=1 origin main
 
       - name: Install Node
         uses: actions/setup-node@v2
@@ -41,6 +41,3 @@ jobs:
           test-script: yarn test --changedSince=origin/main
           package-manager: yarn
           annotations: none
-
-      - name: Add markdown
-        run: echo "Useful Links" >> $GITHUB_STEP_SUMMARY
