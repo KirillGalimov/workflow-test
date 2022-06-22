@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Install Dependencies
+      - name: Install Base Dependencies
         run: yarn install
 
       - name: Create Base report
@@ -38,9 +38,16 @@ jobs:
       - name: Switch to Head branch
         run: git checkout -
 
+      - name: Install Head Dependencies
+        run: yarn install
+
+      - name: Create Head report
+        run: yarn test --ci --json --coverage --testLocationInResults --outputFile=headReport.json
+
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           skip-step: install
           test-script: yarn test
           package-manager: yarn
           base-coverage-file: ./baseReport.json
+          coverage-file: ./headReport.json
