@@ -30,6 +30,6 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           skip-step: install
-          test-script: yarn test
+          test-script: yarn test --changedSince=origin/main
           package-manager: yarn
           base-coverage-file: ./baseReport.json
