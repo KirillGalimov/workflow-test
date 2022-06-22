@@ -1,10 +1,9 @@
 name: Coverage
 
-on:
-  pull_request:
-    branches:
-      - main
-      - test
+on: pull_request
+
+env:
+  base_branch: ${{ github.event.pull_request.base.ref }}
 
 jobs:
   coverage:
@@ -19,6 +18,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch Base branch
+        run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
+
+      - name: Switch to Base branch
+        run: git checkout -f ${{ env.base_branch }}
+
       - name: Install Node
         uses: actions/setup-node@v2
         with:
@@ -26,6 +31,12 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
+
+      - name: Create Base report
+        run: yarn jest --ci --json --coverage --testLocationInResults --outputFile=baseReport.json
+
+      - name: Switch to Head branch
+        run: git checkout -
 
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
