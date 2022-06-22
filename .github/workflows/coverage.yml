@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        # with:
-        #   fetch-depth: 0
 
       - name: Fetch Base branch
         run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
@@ -46,7 +44,6 @@ jobs:
 
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          skip-step: all
           annotations: none
           base-coverage-file: ./baseReport.json
           coverage-file: ./headReport.json
