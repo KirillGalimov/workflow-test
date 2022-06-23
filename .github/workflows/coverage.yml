@@ -16,13 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Cache Node Modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-
       - name: Fetch Base branch
         run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
 
@@ -38,8 +31,23 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
+      - name: Cache Node Modules
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+
       - name: Create Base report
+        if: steps.base-report-cache.outputs.cache-hit != 'true'
         run: yarn test --ci --json --coverage --testLocationInResults --outputFile=baseReport.json
+
+      - name: Cache Base Report
+        id: base-report-cache
+        uses: actions/cache@v3
+        with:
+          path: baseReport.json
+          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
 
       - name: Switch to Head branch
         run: git checkout -
@@ -48,7 +56,15 @@ jobs:
         run: yarn install
 
       - name: Create Head report
+        if: steps.head-report-cache.outputs.cache-hit != 'true'
         run: yarn test --ci --json --coverage --testLocationInResults --outputFile=headReport.json
+
+      - name: Cache Head Report
+        id: head-report-cache
+        uses: actions/cache@v3
+        with:
+          path: headReport.json
+          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
 
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
