@@ -16,6 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Fetch Base branch
+        run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
+
+      - name: Switch to Base branch
+        run: git checkout -f ${{ env.base_branch }}
+
       - name: Cache Node Modules
         id: yarn-cache
         uses: actions/cache@v3
@@ -29,19 +35,6 @@ jobs:
         with:
           path: baseReport.json
           key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
-
-      - name: Cache Head Report
-        id: head-report-cache
-        uses: actions/cache@v3
-        with:
-          path: headReport.json
-          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
-
-      - name: Fetch Base branch
-        run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
-
-      - name: Switch to Base branch
-        run: git checkout -f ${{ env.base_branch }}
 
       - name: Install Node
         uses: actions/setup-node@v3
@@ -58,6 +51,18 @@ jobs:
 
       - name: Switch to Head branch
         run: git checkout -
+
+      - name: Cache Head Report
+        id: head-report-cache
+        uses: actions/cache@v3
+        with:
+          path: headReport.json
+          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
 
       - name: Install Head Dependencies
         run: yarn install
