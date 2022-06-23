@@ -29,12 +29,12 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
 
-      - name: Cache Base Report
-        id: base-report-cache
-        uses: actions/cache@v3
-        with:
-          path: baseReport.json
-          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
+      # - name: Cache Base Report
+      #   id: base-report-cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: baseReport.json
+      #     key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
 
       - name: Install Node
         uses: actions/setup-node@v3
