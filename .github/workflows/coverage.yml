@@ -6,12 +6,16 @@ env:
   base_branch: ${{ github.event.pull_request.base.ref }}
 
 jobs:
-  generate-base-coverage-report:
+  checkout:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
+  generate-base-coverage-report:
+    runs-on: ubuntu-latest
+    needs: [checkout]
+    steps:
       - name: Fetch Base branch
         run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
 
@@ -47,10 +51,8 @@ jobs:
 
   generate-head-coverage-report:
     runs-on: ubuntu-latest
+    needs: [checkout]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Cache Node Modules
         id: yarn-cache
         uses: actions/cache@v3
