@@ -75,6 +75,7 @@ jobs:
       - name: Create Head report
         if: steps.head-report-cache.outputs.cache-hit != 'true'
         run: yarn test --ci --json --coverage --testLocationInResults --outputFile=headReport.json
+        continue-on-error: true
 
       - name: Upload Head report artifact
         uses: actions/upload-artifact@v3
