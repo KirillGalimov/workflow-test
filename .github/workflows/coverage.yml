@@ -1,34 +1,110 @@
 name: Coverage
 
-on:
-  pull_request:
-    branches:
-      - main
-      - test
+on: pull_request
+
+env:
+  base_branch: ${{ github.event.pull_request.base.ref }}
 
 jobs:
-  coverage:
+  generate-base-coverage-report:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v3
 
-      - name: Fetch Main branch
-        run: git fetch --no-tags --depth=1 origin main
+      - name: Fetch Base branch
+        run: git fetch --no-tags --depth=1 origin ${{ env.base_branch }}
+
+      - name: Switch to Base branch
+        run: git checkout -f ${{ env.base_branch }}
+
+      - name: Cache Node Modules
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 14
 
-      - name: Install Dependencies
+      - name: Install Base Dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
-        env:
-          CI: true
 
-      - name: Get Coverage
-        run: yarn test --changedSince=origin/main --coverage
-        env:
-          CI: true
+      - name: Cache Base Report
+        id: base-report-cache
+        uses: actions/cache@v3
+        with:
+          path: baseReport.json
+          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
+
+      - name: Create Base report
+        if: steps.base-report-cache.outputs.cache-hit != 'true'
+        run: yarn test --ci --json --coverage --testLocationInResults --outputFile=baseReport.json
+
+      - name: Upload Base report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: base-report
+          path: baseReport.json
+
+  generate-head-coverage-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache Node Modules
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install Head Dependencies
+        run: yarn install
+
+      - name: Create Head report
+        if: steps.head-report-cache.outputs.cache-hit != 'true'
+        run: yarn test --ci --json --coverage --testLocationInResults --outputFile=headReport.json
+
+      - name: Upload Head report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: head-report
+          path: headReport.json
+
+  compare-coverage-reports:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+    runs-on: ubuntu-latest
+    needs: [generate-base-coverage-report, generate-head-coverage-report]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download Base report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: base-report
+
+      - name: Download Head report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: head-report
+
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          annotations: none
+          base-coverage-file: ./baseReport.json
+          coverage-file: ./headReport.json
