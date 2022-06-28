@@ -5,7 +5,7 @@ it('should return true', () => {
 });
 
 it('should return false', () => {
-  expect(getFalse()).toBeFalsy();
+  expect(getFalse()).toBeTruthy();
 });
 
 it('should return null', () => {
