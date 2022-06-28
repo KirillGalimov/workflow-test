@@ -104,6 +104,13 @@ jobs:
         with:
           name: head-report
 
+      - name: Delete previous report comment
+        uses: izhangzhihao/delete-comment@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_user_name: open-collective-bot[bot]
+          issue_number: ${{ github.event.number }} # remove comments from the current PR
+
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           annotations: none
