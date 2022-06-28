@@ -1,5 +1,5 @@
 import { getTrue, getFalse, getNull } from './utils';
-// test cache
+// test main
 it('should return true', () => {
   expect(getTrue()).toBeTruthy();
 });
