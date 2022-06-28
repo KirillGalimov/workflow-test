@@ -108,6 +108,7 @@ jobs:
       - name: Delete previous report comment
         uses: izhangzhihao/delete-comment@master
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: 'github-actions[bot]'
           issue_number: ${{ github.event.number }} # remove comment from the current PR
 
