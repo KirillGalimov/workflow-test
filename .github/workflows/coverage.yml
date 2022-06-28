@@ -44,6 +44,7 @@ jobs:
       - name: Create Base report
         if: steps.base-report-cache.outputs.cache-hit != 'true'
         run: yarn test --ci --json --coverage --testLocationInResults --outputFile=baseReport.json
+        continue-on-error: true
 
       - name: Upload Base report artifact
         uses: actions/upload-artifact@v3
@@ -107,7 +108,6 @@ jobs:
       - name: Delete previous report comment
         uses: izhangzhihao/delete-comment@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: 'github-actions[bot]'
           issue_number: ${{ github.event.number }} # remove comment from the current PR
 
