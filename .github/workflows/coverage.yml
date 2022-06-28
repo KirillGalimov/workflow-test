@@ -72,13 +72,6 @@ jobs:
       - name: Install Head Dependencies
         run: yarn install
 
-      - name: Cache Head Report
-        id: head-report-cache
-        uses: actions/cache@v3
-        with:
-          path: headReport.json
-          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
-
       - name: Create Head report
         if: steps.head-report-cache.outputs.cache-hit != 'true'
         run: yarn test --ci --json --coverage --testLocationInResults --outputFile=headReport.json
