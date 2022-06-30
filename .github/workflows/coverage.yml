@@ -34,12 +34,12 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: Cache Base Report
-        id: base-report-cache
-        uses: actions/cache@v3
-        with:
-          path: baseReport.json
-          key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
+      # - name: Cache Base Report
+      #   id: base-report-cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: baseReport.json
+      #     key: ${{ runner.os }}-yarn-${{ hashFiles('src/**/*', 'yarn.lock') }}
 
       - name: Create Base report
         if: steps.base-report-cache.outputs.cache-hit != 'true'
