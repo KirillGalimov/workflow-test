@@ -9,5 +9,5 @@ it('should return false', () => {
 });
 
 it('should return null', () => {
-  // expect(getNull()).toBeNull();
+  expect(getNull()).toBeNull();
 });
