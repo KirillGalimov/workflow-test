@@ -18,6 +18,13 @@ jobs:
       - name: Switch to Base branch
         run: git checkout -f ${{ env.base_branch }}
 
+      - name: Cache Node Modules
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+
       - name: Install Node
         uses: actions/setup-node@v3
         with:
@@ -49,6 +56,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Cache Node Modules
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Install Node
         uses: actions/setup-node@v3
