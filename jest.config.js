@@ -1,7 +1,7 @@
-import { jsWithTs as tsjPreset } from 'ts-jest/presets';
+const { jsWithTs: tsjPreset } = require('ts-jest/presets');
 module.exports = {
-  transform: {
-    ...tsjPreset.transform,
-  },
-  preset: 'ts-jest/presets/js-with-ts',
+  // transform: {
+  //   ...tsjPreset.transform,
+  // },
+  // preset: 'ts-jest/presets/js-with-ts',
 };
