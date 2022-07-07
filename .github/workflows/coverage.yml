@@ -111,6 +111,9 @@ jobs:
           delete_user_name: 'github-actions[bot]'
           issue_number: ${{ github.event.number }} # remove comment from the current PR
 
+      - name: Install ts-jest
+        run: yarn add ts-jest@^28.0.2
+
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           annotations: none
