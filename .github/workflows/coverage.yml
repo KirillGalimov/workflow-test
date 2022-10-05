@@ -104,12 +104,12 @@ jobs:
         with:
           name: head-report
 
-      - name: Delete previous report comment
-        uses: izhangzhihao/delete-comment@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          delete_user_name: 'github-actions[bot]'
-          issue_number: ${{ github.event.number }} # remove comment from the current PR
+      # - name: Delete previous report comment
+      #   uses: izhangzhihao/delete-comment@master
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     delete_user_name: 'github-actions[bot]'
+      #     issue_number: ${{ github.event.number }}
 
       - name: Cache Node Modules
         id: yarn-cache
@@ -123,3 +123,10 @@ jobs:
           annotations: none
           base-coverage-file: ./baseReport.json
           coverage-file: ./headReport.json
+          # tell to the action to not attach comment.
+          output: report-markdown
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          # pass output from the previous step by id.
+          message: ${{ steps.coverage.outputs.report }}
