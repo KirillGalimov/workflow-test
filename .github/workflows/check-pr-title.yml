@@ -1,5 +1,12 @@
 name: "Check PR Title"
-on: push
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - labeled
+      - unlabeled
 
 jobs:
   check-pr-title:
