@@ -4,9 +4,6 @@ on:
     types:
       - opened
       - edited
-      - synchronize
-      - labeled
-      - unlabeled
 
 jobs:
   check-pr-title:
@@ -18,4 +15,4 @@ jobs:
       - name: PR Title Verify
         uses: satvik-s/pr-title-check@main
         with:
-          pattern: '^[A-z]+-\d+(:| -) \w(.){4,}$'
+          pattern: '^[A-Za-z]+-\d+(:| -) \w(.){4,}$'
