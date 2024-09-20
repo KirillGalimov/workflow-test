@@ -1,6 +1,5 @@
 name: "Check PR Title"
-on:
-  pull_request:
+on: push
 
 jobs:
   check-pr-title:
