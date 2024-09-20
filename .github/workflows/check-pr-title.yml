@@ -9,6 +9,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: PR Title Verify
-        uses: satvik-s/pr-title-check
+        uses: satvik-s/pr-title-check@main
         with:
           pattern: '^[A-z]+-\d+(:| -) \w(.){4,}$'
